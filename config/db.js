@@ -2,7 +2,7 @@ const mysql = require("mysql2");
 require("dotenv").config;
 
 const env = (key, defaultValue = null) => {
-  console.log(process.env[key]);
+  // console.log(process.env[key]);
   return process.env[key] || defaultValue;
 };
 
@@ -16,6 +16,6 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-console.log("pool", pool);
+// console.log("pool", pool);
 
 module.exports = pool.promise();
