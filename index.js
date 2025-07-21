@@ -1,14 +1,13 @@
 const express = require("express");
-const userRoutes = require("./routes/userRoutes.js");
+const bodyParser = require("body-parser");
+const userRoutes = require("./routes/userRoutes");
 const accountRoutes = require("./routes/accountRoutes");
 
 const app = express();
-app.use(express.json());
+app.use(bodyParser.json());
 
-app.use("/api", userRoutes);
-app.use("/api", accountRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/accounts", accountRoutes);
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Bank app API running on http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

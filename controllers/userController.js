@@ -6,8 +6,8 @@ exports.createUser = async (req, res) => {
     const [result] = await db.query("INSERT INTO users (name) VALUES (?)", [
       name,
     ]);
-    res.status(201).json({ id: result.insertId, name });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(201).json({ message: "User created", userId: result.insertId });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

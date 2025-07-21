@@ -1,14 +1,13 @@
 const express = require("express");
+const router = express.Router();
 const {
   createAccount,
   transferFunds,
   getTransactions,
 } = require("../controllers/accountController");
 
-const router = express.Router();
-
-router.post("/accounts", createAccount);
-router.post("/accounts/transfer", transferFunds);
-router.get("/accounts/:accountId/transactions", getTransactions);
+router.post("/create", createAccount);
+router.post("/transfer", transferFunds);
+router.get("/transactions/:accountNumber", getTransactions);
 
 module.exports = router;
