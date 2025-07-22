@@ -18,16 +18,16 @@ exports.createAccount = async (req, res) => {
 };
 
 exports.transferFunds = async (req, res) => {
-  const { fromAccount, toAccount, amount } = req.body;
+  const { fromAccountNumber, toAccountNumber, amount } = req.body;
 
   try {
     const [[sender]] = await db.query(
       "SELECT * FROM accounts WHERE account_number = ?",
-      [fromAccount]
+      [fromAccountNumber]
     );
     const [[receiver]] = await db.query(
       "SELECT * FROM accounts WHERE account_number = ?",
-      [toAccount]
+      [toAccountNumber]
     );
 
     if (!sender || !receiver)
@@ -38,7 +38,7 @@ exports.transferFunds = async (req, res) => {
     // Deduct from sender
     await db.query(
       "UPDATE accounts SET balance = balance - ? WHERE account_number = ?",
-      [amount, fromAccount]
+      [amount, fromAccountNumber]
     );
     await db.query(
       "INSERT INTO transactions (account_id, type, amount) VALUES (?, ?, ?)",
@@ -48,7 +48,7 @@ exports.transferFunds = async (req, res) => {
     // Add to receiver
     await db.query(
       "UPDATE accounts SET balance = balance + ? WHERE account_number = ?",
-      [amount, toAccount]
+      [amount, toAccountNumber]
     );
     await db.query(
       "INSERT INTO transactions (account_id, type, amount) VALUES (?, ?, ?)",
@@ -56,7 +56,7 @@ exports.transferFunds = async (req, res) => {
     );
 
     res.status(200).json({
-      message: `Transferred ₦${amount} from ${fromAccount} to ${toAccount}`,
+      message: `Transferred ₦${amount} from ${fromAccountNumber} to ${toAccountNumber}`,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
